@@ -51,7 +51,6 @@ RUN echo 'excludepkgs=OpenIPMI network-scripts-openvswitch' >> /etc/dnf/dnf.conf
         kubelet \
         kubernetes-cni \
         libguestfs-tools \
-        libhugetlbfs-utils \
         libvirt \
         lm_sensors \
         lm_sensors-sensord \
@@ -77,9 +76,9 @@ RUN echo 'excludepkgs=OpenIPMI network-scripts-openvswitch' >> /etc/dnf/dnf.conf
         python3-pip \
         qemu-kvm \
         rasdaemon \
-        rsyslog \
         sg3_utils \
         shim \
+        spdk \
         sshpass \
         sudo \
         sysstat \
@@ -101,7 +100,7 @@ RUN echo 'excludepkgs=OpenIPMI network-scripts-openvswitch' >> /etc/dnf/dnf.conf
         doca-runtime \
         doca-devel \
         mlnx-snap \
-        strongswan \
+        mlnx-libsnap \
         ${MLNX_FW_UPDATER} \
         ${BMC_FW_PACKAGES} \
         ${CEC_FW_PACKAGES} \
