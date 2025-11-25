@@ -8,7 +8,9 @@ WORKDIR /root/workspace
 ADD install.sh .
 ADD install.env ./install.env
 ADD create_bfb .
-ADD mlxbf-bootimages.deb .
+#ADD mlxbf-bootimages.deb .
+ADD doca-repo.deb .
+
 ADD 10-mlx-console-messages.conf /etc/sysctl.d/
 
 ENV DEBIAN_FRONTEND="noninteractive" FLASH_KERNEL_SKIP="yes" RUN_FW_UPDATER="no"
@@ -21,7 +23,8 @@ ADD --chown=0:0 --chmod=644 https://prod-cdn.packages.k8s.io/repositories/isv:/k
 # Avoid running flash-kernel post install
 RUN mkdir -p /run/systemd; echo docker > /run/systemd/container
 
-RUN dpkg -i /root/workspace/mlxbf-bootimages.deb
+#RUN dpkg -i /root/workspace/mlxbf-bootimages.deb
+RUN dpkg -i /root/workspace/doca-repo.deb && apt-get update
 
 RUN apt-get clean -y && \
     apt-get update -o "Acquire::https::Verify-Peer=false" -y && \
@@ -100,8 +103,6 @@ RUN apt-get clean -y && \
         rasdaemon \
         rsync \
         rsyslog \
-        software-properties-common \
-        mlnx-libsnap \
         spdk \
         spdk-rpc \
         spdk-dev \
@@ -126,10 +127,8 @@ RUN apt-get clean -y && \
         util-linux-extra \
 #DOCA Packages
         doca-runtime \
+        mlxbf-bootimages-signed \
         doca-devel \
-        libxlio \
-        libxlio-dev \
-        libxlio-utils \
         strongswan \
         ${MLNX_FW_UPDATER} \
         ${BMC_FW_PACKAGES} \
@@ -140,7 +139,7 @@ RUN apt-get clean -y && \
     truncate -s0 /etc/machine-id && \
     sed -i -r -e "s/^(MACAddressPolicy.*)/# \1/" /usr/lib/systemd/network/99-default.link && \
     update-pciids && \
-    wget -qO - https://linux.mellanox.com/public/repo/doca/GPG-KEY-Mellanox.pub | apt-key add -
+    wget -qO /etc/apt/trusted.gpg.d/GPG-KEY-Mellanox.asc https://linux.mellanox.com/public/repo/doca/GPG-KEY-Mellanox.pub
 
 # Manage system services
 RUN systemctl enable NetworkManager.service || true

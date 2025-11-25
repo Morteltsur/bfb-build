@@ -4,9 +4,9 @@ Pin-Priority: 999
 Explanation: Always prefer packages from Nvidia DOCA repo because we have packages that may ovewrite system packages or be lower version.
 
 Package: *
-Pin: origin "linux.mellanox.com"
+Pin: origin ""
 Pin-Priority: 501
-Explanation: Prefer mellanox repos
+Explanation: Prefer local file repos
 
 Package: *openipmi* *openvswitch*
 Pin: release o=Debian
